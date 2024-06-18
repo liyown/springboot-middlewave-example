@@ -18,6 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.xmlunit.util.Mapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SpringBootTest(classes = com.lyw.Main.class)
 public class StringRedisTemplateTest {
 
@@ -37,5 +40,14 @@ public class StringRedisTemplateTest {
         String userJson1 = stringRedisTemplate.opsForValue().get("user");
 
         User user1 = mapper.readValue(userJson1, User.class);
+    }
+
+    @Test
+    public void testHash() throws JsonProcessingException {
+
+        stringRedisTemplate.opsForHash().put("user:hash", "name", "lyw");
+        stringRedisTemplate.opsForHash().put("user:hash", "age", "18");
+        Map<Object, Object> user = stringRedisTemplate.opsForHash().entries("user:hash");
+        System.out.println(user);
     }
 }
