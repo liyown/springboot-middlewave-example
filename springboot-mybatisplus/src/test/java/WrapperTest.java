@@ -56,6 +56,5 @@ public class WrapperTest {
     public void testLock() {
         ReentrantLock lock = new ReentrantLock();
         lock.lock();
-        InputStreamReader
     }
 }

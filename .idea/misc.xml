@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/springboot-quick/pom.xml" />
         <option value="$PROJECT_DIR$/springboot-quickstart/pom.xml" />
         <option value="$PROJECT_DIR$/springboot-mybatisplus/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot-redis/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

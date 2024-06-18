@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/springboot-mybatisplus/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springboot-quickstart/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springboot-redis/src/main/java" charset="UTF-8" />
   </component>
 </project>
