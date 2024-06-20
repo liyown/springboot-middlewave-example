@@ -9,20 +9,26 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName tb_user
+ * @TableName tb_blog_comments
  */
-@TableName(value ="tb_user")
+@TableName(value ="tb_blog_comments")
 @Data
-public class User implements Serializable {
+public class BlogComments implements Serializable {
     private Long id;
 
-    private String phone;
+    private Long userId;
 
-    private String password;
+    private Long blogId;
 
-    private String nickName;
+    private Long parentId;
 
-    private String icon;
+    private Long answerId;
+
+    private String content;
+
+    private Integer liked;
+
+    private Integer status;
 
     private Date createTime;
 

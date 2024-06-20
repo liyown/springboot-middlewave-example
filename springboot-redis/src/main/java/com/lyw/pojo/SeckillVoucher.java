@@ -9,22 +9,22 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName tb_user
+ * @TableName tb_seckill_voucher
  */
-@TableName(value ="tb_user")
+@TableName(value ="tb_seckill_voucher")
 @Data
-public class User implements Serializable {
-    private Long id;
+public class SeckillVoucher implements Serializable {
 
-    private String phone;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long voucherId;
 
-    private String password;
-
-    private String nickName;
-
-    private String icon;
+    private Integer stock;
 
     private Date createTime;
+
+    private Date beginTime;
+
+    private Date endTime;
 
     private Date updateTime;
 

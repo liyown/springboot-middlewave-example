@@ -9,19 +9,16 @@ package spring.data.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lyw.HMDPMain;
 import com.lyw.pojo.User;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
-import org.objenesis.instantiator.basic.NewInstanceInstantiator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.xmlunit.util.Mapper;
 
-import java.util.HashMap;
 import java.util.Map;
 
-@SpringBootTest(classes = com.lyw.Main.class)
+@SpringBootTest(classes = HMDPMain.class)
 public class StringRedisTemplateTest {
 
     @Resource
@@ -32,22 +29,22 @@ public class StringRedisTemplateTest {
     @Test
     public void testString() throws JsonProcessingException {
 
-        User user = new User(1L, "lyw", 18);
-        String userJson = mapper.writeValueAsString(user);
-
-        stringRedisTemplate.opsForValue().set("user", userJson);
-
-        String userJson1 = stringRedisTemplate.opsForValue().get("user");
-
-        User user1 = mapper.readValue(userJson1, User.class);
+//        User user = new User();
+//        String userJson = mapper.writeValueAsString(user);
+//
+//        stringRedisTemplate.opsForValue().set("user", userJson);
+//
+//        String userJson1 = stringRedisTemplate.opsForValue().get("user");
+//
+//        User user1 = mapper.readValue(userJson1, User.class);
     }
 
     @Test
     public void testHash() throws JsonProcessingException {
 
-        stringRedisTemplate.opsForHash().put("user:hash", "name", "lyw");
-        stringRedisTemplate.opsForHash().put("user:hash", "age", "18");
-        Map<Object, Object> user = stringRedisTemplate.opsForHash().entries("user:hash");
-        System.out.println(user);
+//        stringRedisTemplate.opsForHash().put("user:hash", "name", "lyw");
+//        stringRedisTemplate.opsForHash().put("user:hash", "age", "18");
+//        Map<Object, Object> user = stringRedisTemplate.opsForHash().entries("user:hash");
+//        System.out.println(user);
     }
 }

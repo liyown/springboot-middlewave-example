@@ -1,12 +1,10 @@
 package spring.data.redis;
 
+import com.lyw.HMDPMain;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-
-import javax.swing.*;
 
 
 /**
@@ -15,7 +13,7 @@ import javax.swing.*;
  * @create: 2024-06-18 17:35
  * @Description:
  */
-@SpringBootTest(classes = com.lyw.Main.class)
+@SpringBootTest(classes = HMDPMain.class)
 public class RedisTemplateTest {
 
     @Resource

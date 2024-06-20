@@ -9,20 +9,28 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName tb_user
+ * @TableName tb_voucher
  */
-@TableName(value ="tb_user")
+@TableName(value ="tb_voucher")
 @Data
-public class User implements Serializable {
+public class Voucher implements Serializable {
     private Long id;
 
-    private String phone;
+    private Long shopId;
 
-    private String password;
+    private String title;
 
-    private String nickName;
+    private String subTitle;
 
-    private String icon;
+    private String rules;
+
+    private Long payValue;
+
+    private Long actualValue;
+
+    private Integer type;
+
+    private Integer status;
 
     private Date createTime;
 

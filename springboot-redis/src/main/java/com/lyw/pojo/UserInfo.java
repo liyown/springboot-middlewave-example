@@ -9,20 +9,32 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName tb_user
+ * @TableName tb_user_info
  */
-@TableName(value ="tb_user")
+@TableName(value ="tb_user_info")
 @Data
-public class User implements Serializable {
-    private Long id;
+public class UserInfo implements Serializable {
+    /**
+     * 用户id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long userId;
 
-    private String phone;
+    private String city;
 
-    private String password;
+    private String introduce;
 
-    private String nickName;
+    private Integer fans;
 
-    private String icon;
+    private Integer followee;
+
+    private Integer gender;
+
+    private Date birthday;
+
+    private Integer credits;
+
+    private Integer level;
 
     private Date createTime;
 

@@ -1,3 +1,4 @@
+
 spring:
   data:
     redis:
@@ -9,3 +10,31 @@ spring:
           max-active: 8
           max-idle: 8
           max-wait: 1000
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://106.53.217.225:3300/hmdp?useSSL=false&rewriteBatchedStatements=true
+      username: root
+      password: mysql_lyw
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: 8081
+
+mybatis-plus:
+
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-prefix: mybatis
+  type-aliases-package: com.lyw.pojo
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    com.lyw: debug

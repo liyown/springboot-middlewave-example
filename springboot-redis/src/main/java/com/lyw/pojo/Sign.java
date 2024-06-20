@@ -9,24 +9,22 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * @TableName tb_user
+ * @TableName tb_sign
  */
-@TableName(value ="tb_user")
+@TableName(value ="tb_sign")
 @Data
-public class User implements Serializable {
+public class Sign implements Serializable {
     private Long id;
 
-    private String phone;
+    private Long userId;
 
-    private String password;
+    private Object year;
 
-    private String nickName;
+    private Integer month;
 
-    private String icon;
+    private Date date;
 
-    private Date createTime;
-
-    private Date updateTime;
+    private Integer isBackup;
 
     private static final long serialVersionUID = 1L;
 }
