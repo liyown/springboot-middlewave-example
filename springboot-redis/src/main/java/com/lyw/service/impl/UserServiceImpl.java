@@ -1,7 +1,6 @@
 package com.lyw.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,9 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyw.dto.LoginFormDTO;
 import com.lyw.dto.Result;
 import com.lyw.dto.UserDTO;
+import com.lyw.mapper.UserMapper;
 import com.lyw.pojo.User;
 import com.lyw.service.UserService;
-import com.lyw.mapper.UserMapper;
 import com.lyw.utils.RedisConstants;
 import com.lyw.utils.RegexUtils;
 import com.lyw.utils.SystemConstants;
@@ -21,15 +20,15 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.lyw.utils.RedisConstants.*;
@@ -40,6 +39,7 @@ import static com.lyw.utils.RedisConstants.*;
 * @createDate 2024-06-19 09:22:40
 */
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService
 {
 
@@ -152,7 +152,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //获得今天是本月的第几天
         int dayOfMonth = now.getDayOfMonth();
         //写入到redis
-        stringRedisTemplate.opsForValue().setBit(redisKey, dayOfMonth - 1, true);
+        stringRedisTemplate.opsForValue().setBit(redisKey, dayOfMonth, true);
         //返回
         return Result.ok();
     }
@@ -179,40 +179,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                                 .get(BitFieldSubCommands
                                         .BitFieldType
                                         .unsigned(dayOfMonth)).valueAt(0));
-        //判断是否为空
-        if (list == null || list.isEmpty())
+        long signData = Optional.ofNullable(list).map(l -> l.get(0)).orElse(0L);
+        log.info("signData:{}", signData);
+        if (signData == 0)
         {
-            //没有，返回0
-            return Result.ok(0);
-        }
-        //取第一个，因为一个月最多有31天，小于32位，所以只有一个
-        Long num = list.get(0);
-        //判断第一个是否为空
-        if (num == null || num == 0)
-        {
-            //第一个为0，返回直接0
             return Result.ok(0);
         }
         //计数器
         int count = 0;
-        //循环遍历数据
-        while (true)
+        while ((signData & 1) == 1)
         {
-            //无符号，和1做与运算
-            long result = num & 1;
-            //判断是否为未签到
-            if (result == 0)
-            {
-                //为签到，跳出循环
-                break;
-            }
-            //不是0
-            //计数器+1
             count++;
-            //右移一位，左边会补0，所以不用担心会死循环
-            num = num >> 1;
+            signData = signData >> 1;
         }
-        //返回
         return Result.ok(count);
     }
 

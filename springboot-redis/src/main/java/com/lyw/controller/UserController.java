@@ -125,7 +125,7 @@ public class UserController
      *
      * @return Result
      */
-    @GetMapping("/signCount")
+    @GetMapping("/sign/count")
     public Result signCount()
     {
         return userService.signCount();
