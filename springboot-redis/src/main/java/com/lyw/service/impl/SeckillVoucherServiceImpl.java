@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 public class SeckillVoucherServiceImpl extends ServiceImpl<SeckillVoucherMapper, SeckillVoucher>
     implements SeckillVoucherService{
 
+    @Override
+    public boolean addSeckillVoucher(SeckillVoucher voucher) {
+        return this.save(voucher);
+    }
 }
 
 

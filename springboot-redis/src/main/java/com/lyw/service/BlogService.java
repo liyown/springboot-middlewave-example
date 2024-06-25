@@ -12,4 +12,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface BlogService extends IService<Blog> {
 
     Result queryHotBlog(Integer current);
+
+    Result likeBlog(Long id);
+
+    Result queryLikes(Long id);
 }

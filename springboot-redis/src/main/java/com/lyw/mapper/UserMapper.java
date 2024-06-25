@@ -2,6 +2,7 @@ package com.lyw.mapper;
 
 import com.lyw.pojo.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author liuya
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface UserMapper extends BaseMapper<User> {
 
+    User selectByIds(@Param("id") Long id);
 }
 
 

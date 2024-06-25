@@ -104,7 +104,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 
     private Shop queryByIdWithExpire(Long id) {
         String s = stringRedisTemplate.opsForValue().get(CACHE_SHOP_KEY + id);
-        if (s == null) {
+        if (s == null || s.isEmpty()) {
             savaShopWithExpire(id);
         }
 
@@ -112,25 +112,29 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         }).orElseThrow();
 
         if (Instant.now().isAfter(redisData.getExpireTime()) && tryLock(LOCK_SHOP_KEY + id)) {
-            try {
-                log.info("缓存过期");
-                new Thread(() -> savaShopWithExpire(id)).start();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            } finally {
-                unlock(LOCK_SHOP_KEY + id);
-            }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            savaShopWithExpire(id);
+                        } finally {
+                            unlock(LOCK_SHOP_KEY + id);
+                        }
+                    }
+                }).start();
         }
         return redisData.getData();
     }
     private void savaShopWithExpire(Long id) {
-        Shop shop = this.lambdaQuery().eq(Shop::getId, id).one();
-        RedisData<Shop> redisData = new RedisData<>();
-        redisData.setExpireTime(Instant.now().plusSeconds(CACHE_EXPIRE_TTL));
-        redisData.setData(shop);
-        stringRedisTemplate.opsForValue().set(
-                CACHE_SHOP_KEY + shop.getId(),
-                JsonUtils.toJson(redisData).orElseThrow());
+        Shop shop = lambdaQuery().eq(Shop::getId, id).one();
+        if (shop != null) {
+            RedisData<Shop> redisData = new RedisData<>();
+            redisData.setExpireTime(Instant.now().plusSeconds(CACHE_EXPIRE_TTL));
+            redisData.setData(shop);
+            stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + shop.getId(), JsonUtils.toJson(redisData).orElseThrow());
+        } else {
+            stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, "", 5, TimeUnit.MINUTES);
+        }
     }
 
     @Override

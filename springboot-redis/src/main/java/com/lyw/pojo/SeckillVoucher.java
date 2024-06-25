@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -15,18 +18,19 @@ import lombok.Data;
 @Data
 public class SeckillVoucher implements Serializable {
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "voucher_id", type = IdType.AUTO)
     private Long voucherId;
 
     private Integer stock;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Date beginTime;
+    private LocalDateTime beginTime;
 
-    private Date endTime;
+    private LocalDateTime endTime;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }

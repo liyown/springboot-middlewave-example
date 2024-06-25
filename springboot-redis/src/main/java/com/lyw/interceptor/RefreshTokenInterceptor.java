@@ -8,6 +8,7 @@ package com.lyw.interceptor;
  */
 import cn.hutool.core.bean.BeanUtil;
 import com.lyw.dto.UserDTO;
+import com.lyw.utils.JsonUtils;
 import com.lyw.utils.RedisConstants;
 import com.lyw.utils.UserHolder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.lyw.utils.RedisConstants.LOGIN_USER_KEY;
 import static com.lyw.utils.RedisConstants.LOGIN_USER_TTL;
 
 /**
@@ -69,6 +71,10 @@ public class RefreshTokenInterceptor implements HandlerInterceptor
         }
         //token存在, 刷新有效时间
         stringRedisTemplate.expire(RedisConstants.LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
+        // 保存用户信息到ThreadLocal
+        String userDTO = stringRedisTemplate.opsForValue().get(LOGIN_USER_KEY+token);
+        UserHolder.saveUser(JsonUtils.toObject(userDTO,UserDTO.class).orElseThrow());
+
         //放行
         return true;
     }

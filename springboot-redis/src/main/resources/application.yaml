@@ -20,6 +20,9 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     default-property-inclusion: non_null
+    # 小驼峰转换
+#    property-naming-strategy: SNAKE_CASE
+
 
 server:
   port: 8081
@@ -30,6 +33,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     log-prefix: mybatis
+    auto-mapping-behavior: full
   type-aliases-package: com.lyw.pojo
   global-config:
     db-config:

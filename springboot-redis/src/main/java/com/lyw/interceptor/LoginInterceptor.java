@@ -53,7 +53,7 @@ public class LoginInterceptor implements HandlerInterceptor
             return false;
         }
         // 已登录
-        UserHolder.saveUser(JsonUtils.toObject(userDTO,UserDTO.class).orElse(new UserDTO()));
+        UserHolder.saveUser(JsonUtils.toObject(userDTO,UserDTO.class).orElseThrow());
         return true;
     }
 }

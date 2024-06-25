@@ -24,4 +24,35 @@
         actual_value,type,status,
         create_time,update_time
     </sql>
+
+    <resultMap id="allVoucherResult" type="com.lyw.pojo.Voucher">
+        <id column="id" property="id" />
+        <result column="shop_id" property="shopId" />
+        <result column="title" property="title" />
+        <result column="sub_title" property="subTitle" />
+        <result column="rules" property="rules" />
+        <result column="pay_value" property="payValue" />
+        <result column="actual_value" property="actualValue" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <association property="seckillVoucher">
+            <id column="id" property="voucherId" />
+            <result column="stock" property="stock" />
+            <result column="begin_time" property="beginTime" />
+            <result column="end_time" property="endTime" />
+        </association>
+
+
+    </resultMap>
+
+    <select id="queryVoucherOfShop" resultType="voucher" parameterType="java.lang.Long">
+        SELECT
+            v.`id`, v.`shop_id`, v.`title`, v.`sub_title`, v.`rules`, v.`pay_value`,
+            v.`actual_value`, v.`type`, sv.`stock` , sv.begin_time , sv.end_time
+        FROM tb_voucher v
+                 LEFT JOIN  tb_seckill_voucher sv ON v.id = sv.voucher_id
+        WHERE v.shop_id = #{shopId} AND v.status = 1
+    </select>
 </mapper>

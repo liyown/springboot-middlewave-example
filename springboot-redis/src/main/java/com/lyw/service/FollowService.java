@@ -1,5 +1,6 @@
 package com.lyw.service;
 
+import com.lyw.dto.Result;
 import com.lyw.pojo.Follow;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +11,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface FollowService extends IService<Follow> {
 
+    Result follow(Long id, Long id1, Boolean type);
+
+    Result isFollow(Long id, Long id1);
+
+    Result commonFollow(Long id, Long id1);
 }

@@ -63,17 +63,18 @@ public class RedisLockImpl implements RedisLock
     {
         this.name = name;
         this.stringRedisTemplate = stringRedisTemplate;
+
     }
 
     @Override
     public boolean tryLock(long timeoutSec)
     {
         //获得线程标识
-        long threadID = Thread.currentThread().getId();
+        String threadID = ID_PREFIX + Thread.currentThread().getId();
         //锁key
         String lockKey = KEY_PREFIX + name;
         //获取锁
-        Boolean result = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, String.valueOf(threadID),
+        Boolean result = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, threadID,
                 timeoutSec, TimeUnit.SECONDS);
         //返回
         return Boolean.TRUE.equals(result);

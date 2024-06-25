@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
 * @author liuya
@@ -53,6 +54,32 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog>
             blog.setIsLike(true);
         });
         return Result.ok(records);
+    }
+
+    @Override
+    public Result likeBlog(Long id) {
+        Blog blog = getById(id);
+        // 判断是否点赞过了
+        Boolean member = stringRedisTemplate.opsForZSet().score("blog:liked:" + id, UserHolder.getUser().getId().toString()) != null;
+        if (Boolean.TRUE.equals(member)) {
+            // 点赞取消
+            lambdaUpdate().setSql("liked = liked - 1").eq(Blog::getId, id).update();
+            stringRedisTemplate.opsForZSet().remove("blog:liked:" + id, UserHolder.getUser().getId().toString());
+            blog.setIsLike(false);
+            return Result.ok(blog);
+        } else {
+            // 点赞
+            lambdaUpdate().setSql("liked = liked + 1").eq(Blog::getId, id).update();
+            stringRedisTemplate.opsForZSet().add("blog:liked:" + id, UserHolder.getUser().getId().toString(), System.currentTimeMillis());
+            return Result.ok("点赞成功");
+        }
+
+    }
+
+    @Override
+    public Result queryLikes(Long id) {
+        Set<String> strings = stringRedisTemplate.opsForZSet().rangeByScore("blog:liked:" + id, 0, System.currentTimeMillis());
+        return Result.ok(strings);
     }
 
 }

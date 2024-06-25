@@ -22,7 +22,7 @@ public class RedisTemplateTest {
     @Test
     public void testString() {
         myRedisTemplate.opsForValue().set("name", 123);
-        Object name = myRedisTemplate.opsForValue().get("name");
+        Integer name = (Integer)myRedisTemplate.opsForValue().get("name");
         System.out.println(name);
 
     }

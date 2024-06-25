@@ -1,5 +1,7 @@
 package com.lyw.service;
 
+import com.lyw.dto.Result;
+import com.lyw.pojo.SeckillVoucher;
 import com.lyw.pojo.VoucherOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface VoucherOrderService extends IService<VoucherOrder> {
 
+   Result seckillVoucher(Long voucherId) throws InterruptedException;
+
+   Result getResult(Long voucherId, SeckillVoucher seckillVoucher);
 }
