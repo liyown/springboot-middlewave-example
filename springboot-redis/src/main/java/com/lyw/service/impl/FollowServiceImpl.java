@@ -3,10 +3,10 @@ package com.lyw.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lyw.dto.Result;
+import com.lyw.mapper.FollowMapper;
 import com.lyw.pojo.Follow;
 import com.lyw.pojo.User;
 import com.lyw.service.FollowService;
-import com.lyw.mapper.FollowMapper;
 import com.lyw.utils.RedisIDGenerator;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -69,6 +69,14 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow>
         }
         List<User> collect = intersect.stream().map(userServiceImpl::getById).collect(Collectors.toList());
         return Result.ok(collect);
+    }
+
+    @Override
+    public List<Long> myFollows(Long id) {
+        return this.lambdaQuery().eq(Follow::getUserId, id).list()
+                .stream()
+                .map(Follow::getFollowUserId)
+                .collect(Collectors.toList());
     }
 
 }

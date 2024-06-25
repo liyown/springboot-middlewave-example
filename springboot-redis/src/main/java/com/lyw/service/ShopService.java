@@ -1,8 +1,8 @@
 package com.lyw.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyw.dto.Result;
 import com.lyw.pojo.Shop;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
 * @author liuya
@@ -18,4 +18,6 @@ public interface ShopService extends IService<Shop> {
     Result saveShop(Shop shop);
 
     Result updateShopId(Shop shop);
+
+    void loadGEOByShopType(Long TypeId);
 }

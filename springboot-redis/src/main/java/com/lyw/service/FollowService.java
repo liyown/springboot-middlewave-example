@@ -1,8 +1,10 @@
 package com.lyw.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyw.dto.Result;
 import com.lyw.pojo.Follow;
-import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author liuya
@@ -16,4 +18,6 @@ public interface FollowService extends IService<Follow> {
     Result isFollow(Long id, Long id1);
 
     Result commonFollow(Long id, Long id1);
+
+    List<Long> myFollows(Long id);
 }

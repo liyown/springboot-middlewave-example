@@ -6,6 +6,7 @@ import com.lyw.dto.UserDTO;
 import com.lyw.pojo.Blog;
 import com.lyw.pojo.User;
 import com.lyw.service.BlogService;
+import com.lyw.service.FollowService;
 import com.lyw.service.UserService;
 import com.lyw.utils.SystemConstants;
 import com.lyw.utils.UserHolder;
@@ -13,7 +14,9 @@ import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: liuyaowen
@@ -31,6 +34,9 @@ public class BlogController {
     private UserService userService;
 
     @Resource
+    private FollowService followService;
+
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     @PostMapping
@@ -40,6 +46,10 @@ public class BlogController {
         blog.setUserId(user.getId());
         // 保存探店博文
         blogService.save(blog);
+        // 查询粉丝
+        List<Long> longs = followService.myFollows(user.getId());
+        // 推送博文id
+        longs.forEach(aLong -> stringRedisTemplate.opsForList().leftPush("blog:push:" + aLong, blog.getId().toString()));
         // 返回id
         return Result.ok(blog.getId());
     }
@@ -64,6 +74,23 @@ public class BlogController {
         // 获取当前页数据
         List<Blog> records = page.getRecords();
         return Result.ok(records);
+    }
+    @GetMapping("/of/follow")
+    public Result queryFollowBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
+        // 获取登录用户
+        UserDTO user = UserHolder.getUser();
+        // 查询推送博文id
+        List<String> range = stringRedisTemplate.opsForList().range("blog:push:" + user.getId(), 0, -1);
+
+        // 查询博文
+        List<Blog> records = blogService.query().in("id", range).orderByDesc("create_time").list();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", records);
+        map.put("minTime", 0);
+        map.put("offset", 0);
+
+        return Result.ok(map);
     }
 
     @GetMapping("of/user")
