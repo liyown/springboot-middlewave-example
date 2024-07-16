@@ -7,19 +7,27 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="springboot-elastic-search" />
+        <module name="publisher" />
         <module name="springboot-redis" />
+        <module name="consumer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="springboot-mybatisplus" target="17" />
       <module name="springboot-quick" target="1.8" />
       <module name="springboot-quickstart" target="17" />
+      <module name="untitled" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="consumer" options="-parameters" />
+      <module name="publisher" options="-parameters" />
+      <module name="springboot-elastic-search" options="-parameters" />
       <module name="springboot-mybatisplus" options="-parameters" />
       <module name="springboot-quickstart" options="-parameters" />
+      <module name="springboot-rabbitmq" options="" />
       <module name="springboot-redis" options="-parameters" />
     </option>
   </component>

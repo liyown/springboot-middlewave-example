@@ -1,0 +1,23 @@
+spring:
+
+  application:
+    name: publisher
+  rabbitmq:
+    host: 192.168.208.128
+    port: 5672
+    username: user
+    password: password
+    virtual-host: /hmall
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      retry:
+        enabled: true
+        max-attempts: 3
+        initial-interval: 1000
+        max-interval: 10000
+        multiplier: 2
+
+
+server:
+  port: 7081

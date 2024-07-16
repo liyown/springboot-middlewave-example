@@ -176,9 +176,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<Long> list = stringRedisTemplate.opsForValue()
                 .bitField(redisKey,
                         BitFieldSubCommands.create()
-                                .get(BitFieldSubCommands
-                                        .BitFieldType
-                                        .unsigned(dayOfMonth)).valueAt(0));
+                                .get(BitFieldSubCommands.BitFieldType.unsigned(dayOfMonth)).valueAt(0));
         long signData = Optional.ofNullable(list).map(l -> l.get(0)).orElse(0L);
         log.info("signData:{}", signData);
         if (signData == 0)
