@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +31,7 @@ public class StringAPI {
         // GET key
         String value = stringRedisTemplate.opsForValue().get("key");
         // MGET
-        Map<String, String> map = stringRedisTemplate.opsForValue().multiGet(Map.of("key1", "key2"));
+        List map = stringRedisTemplate.opsForValue().multiGet(List.of("key1", "key2"));
 
         // INCR key
         Long incr = stringRedisTemplate.opsForValue().increment("key");
